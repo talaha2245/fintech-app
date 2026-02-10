@@ -33,10 +33,11 @@ export default function Model1() {
   }, []);
 
   const navItems: NavItem[] = [
+    {label : "Home" , href : '#'},
     { label: "Products", href: "#" },
+    {label : "Tech Consultancy", href : "#"},
+    { label: "Team", href: "#" },
     { label: "Solutions", href: "#" },
-    { label: "Developers", href: "#" },
-    { label: "Pricing", href: "#" },
   ];
 
   const features: Feature[] = [
@@ -87,12 +88,12 @@ export default function Model1() {
   };
 
   return (
-    <div className="min-h-screen bg-[#101c22] text-slate-200 font-['Work_Sans'] selection:bg-primary/30 relative overflow-x-hidden">
+    <div className="min-h-screen bg-zinc-950 text-slate-200 font-['Work_Sans'] selection:bg-primary/30 relative overflow-x-hidden">
       <GlobalStyles />
       <FloatingBackground />
 
       {/* Navigation */}
-      <nav className="fixed top-0 w-full z-50 bg-[#101c22]/80 backdrop-blur-xl border-b border-white/5">
+      <nav className="fixed top-0 w-full z-50 bg-zinc-950/80 backdrop-blur-xl border-b border-white/20">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
           <div className="flex items-center space-x-2 group cursor-pointer relative">
             <div className="relative w-10 h-10 bg-primary rounded-lg flex items-center justify-center shadow-lg shadow-primary/20 z-10 transition-transform group-hover:scale-110">
@@ -100,7 +101,7 @@ export default function Model1() {
             </div>
             <div className="flex flex-col">
               <span className="text-xl font-bold tracking-tight text-white uppercase leading-none">
-                Fin<span className="text-primary">Tech</span>
+                Biz<span className="text-primary">Mobia</span>
               </span>
               <span className="text-[8px] uppercase tracking-[0.2em] text-slate-500 font-bold">Solutions</span>
             </div>
@@ -121,7 +122,7 @@ export default function Model1() {
             ))}
           </div>
 
-          <button className="bg-primary hover:bg-primary/90 text-white px-6 py-2.5 rounded-full font-semibold transition-all shadow-lg shadow-primary/20 hover:scale-105 active:scale-95">
+          <button className="bg-emerald-400  hover:bg-emerald-400 /90 text-white px-6 py-2.5 rounded-full font-semibold transition-all shadow-lg shadow-primary/20 hover:scale-110 active:scale-95">
             Get Started
           </button>
         </div>
@@ -235,7 +236,7 @@ export default function Model1() {
       </header>
 
       {/* Features Grid - Implementation of Spring Physics Video Style */}
-      <section className="py-32 bg-slate-900/30">
+      <section className="py-32 bg-zinc-950">
         <div className="max-w-7xl mx-auto px-6">
           <RevealSection className="text-center mb-20">
             <h2 className="text-3xl lg:text-5xl font-extrabold text-white mb-6">Core Ecosystem Pillars</h2>
