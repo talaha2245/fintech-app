@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, type ReactNode, type ReactElement } from 'react';
 import { 
   motion, 
   useScroll, 
@@ -23,8 +23,41 @@ import {
   BarChart3
 } from 'lucide-react';
 
+// --- Types & Interfaces ---
 
-const CircularText = ({ text, radius = 50, speed = 15, reverse = false }) => {
+interface CircularTextProps {
+  text: string;
+  radius?: number;
+  speed?: number;
+  reverse?: boolean;
+}
+
+interface MagneticSpotlightCardProps {
+  children: ReactNode;
+  className?: string;
+}
+
+interface JourneyItem {
+  step: string;
+  title: string;
+  icon: ReactElement;
+  desc: string;
+}
+
+interface VerticalItem {
+  title: string;
+  icon: ReactElement;
+  desc: string;
+}
+
+// --- Components ---
+
+const CircularText: React.FC<CircularTextProps> = ({ 
+  text, 
+  radius = 50, 
+  speed = 15, 
+  reverse = false 
+}) => {
   const characters = text.split("");
   const degreeStep = 360 / characters.length;
 
@@ -50,14 +83,14 @@ const CircularText = ({ text, radius = 50, speed = 15, reverse = false }) => {
   );
 };
 
-const MagneticSpotlightCard = ({ children, className = "" }) => {
-  const cardRef = useRef(null);
+const MagneticSpotlightCard: React.FC<MagneticSpotlightCardProps> = ({ children, className = "" }) => {
+  const cardRef = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const rotateX = useSpring(useMotionValue(0), { stiffness: 100, damping: 30 });
   const rotateY = useSpring(useMotionValue(0), { stiffness: 100, damping: 30 });
 
-  function handleMouseMove(event) {
+  function handleMouseMove(event: React.MouseEvent<HTMLDivElement>) {
     if (!cardRef.current) return;
     const rect = cardRef.current.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
@@ -79,6 +112,12 @@ const MagneticSpotlightCard = ({ children, className = "" }) => {
     rotateY.set(0);
   }
 
+  // Combined motion value for the radial gradient background
+  const background = useTransform(
+    [x, y],
+    ([lx, ly]: number[]) => `radial-gradient(400px circle at ${lx}px ${ly}px, rgba(14, 165, 233, 0.15), transparent 80%)`
+  );
+
   return (
     <motion.div
       ref={cardRef}
@@ -93,26 +132,27 @@ const MagneticSpotlightCard = ({ children, className = "" }) => {
     >
       <motion.div
         className="pointer-events-none absolute -inset-px rounded-3xl opacity-0 transition duration-500 group-hover:opacity-100"
-        style={{
-          background: useTransform(
-            [x, y],
-            ([lx, ly]) => `radial-gradient(400px circle at ${lx}px ${ly}px, rgba(14, 165, 233, 0.15), transparent 80%)`
-          ),
-        }}
+        style={{ background }}
       />
       <div style={{ transform: "translateZ(40px)" }}>{children}</div>
     </motion.div>
   );
 };
 
-const TransformationJourney = () => {
-  const containerRef = useRef(null);
+const TransformationJourney: React.FC = () => {
+  const containerRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"]
   });
 
   const pathLength = useSpring(scrollYProgress, { stiffness: 50, damping: 20 });
+
+  const journeySteps: JourneyItem[] = [
+    { step: "01", title: "Structural Audit", icon: <Database />, desc: "Evaluating data flow integrity and architectural debt." },
+    { step: "02", title: "Cloud Strategy", icon: <Cpu />, desc: "Deploying high-availability infrastructure for global scale." },
+    { step: "03", title: "Real-time Deploy", icon: <BarChart3 />, desc: "Full-stack integration with autonomous optimization." }
+  ];
 
   return (
     <section ref={containerRef} className="py-32 relative overflow-hidden bg-[#030712]">
@@ -158,11 +198,7 @@ const TransformationJourney = () => {
             </svg>
           </div>
 
-          {[
-            { step: "01", title: "Structural Audit", icon: <Database />, desc: "Evaluating data flow integrity and architectural debt." },
-            { step: "02", title: "Cloud Strategy", icon: <Cpu />, desc: "Deploying high-availability infrastructure for global scale." },
-            { step: "03", title: "Real-time Deploy", icon: <BarChart3 />, desc: "Full-stack integration with autonomous optimization." }
-          ].map((item, idx) => (
+          {journeySteps.map((item, idx) => (
             <motion.div 
               key={idx} 
               initial={{ opacity: 0, scale: 0.9 }}
@@ -172,7 +208,7 @@ const TransformationJourney = () => {
             >
               <div className="w-24 h-24 bg-slate-900/60 rounded-3xl flex items-center justify-center mx-auto mb-8 border border-white/5 text-cyan-400 shadow-2xl backdrop-blur-md group hover:border-cyan-500/50 transition-colors">
                 <div className="absolute inset-0 bg-cyan-500/10 rounded-3xl blur-xl group-hover:bg-cyan-500/20 transition-all" />
-                {React.cloneElement(item.icon, { size: 32 })}
+                {React.cloneElement(item.icon as ReactElement)}
               </div>
               <span className="text-indigo-400 font-black text-xs mb-3 block tracking-[0.3em]">{item.step}</span>
               <h3 className="text-2xl font-bold mb-4 text-white">{item.title}</h3>
@@ -185,10 +221,9 @@ const TransformationJourney = () => {
   );
 };
 
-
-export default function Model2() {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+export default function App() {
+  const [isScrolled, setIsScrolled] = useState<boolean>(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -196,8 +231,15 @@ export default function Model2() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const verticalServices: VerticalItem[] = [
+    { title: "FinTech Core", icon: <ShieldCheck />, desc: "Blockchain-grade security for high-frequency financial transactions." },
+    { title: "VAS Hub", icon: <Layers />, desc: "Micro-service architecture for global content distribution networks." },
+    { title: "Smart Logic", icon: <Globe />, desc: "IoT-enabled ticketing systems for world-class venue management." },
+    { title: "Logistics", icon: <Truck />, desc: "AI-driven fulfillment pipelines with zero-touch automation." }
+  ];
+
   return (
-    <div className="bg-[#020617] text-slate-300 selection:bg-cyan-500/30 selection:text-white overflow-x-hidden font-sans">
+    <div className="bg-[#020617] text-slate-300 selection:bg-cyan-500/30 selection:text-white overflow-x-hidden font-sans min-h-screen">
       
       {/* Navigation */}
       <nav className={`fixed top-0 w-full z-[100] transition-all duration-500 ${isScrolled ? 'bg-[#020617]/90 backdrop-blur-xl border-b border-white/5 h-16' : 'bg-transparent h-24'}`}>
@@ -233,7 +275,6 @@ export default function Model2() {
 
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
-        {/* Deep Field Grid Background */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-20" />
         
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-4xl opacity-40 pointer-events-none">
@@ -272,7 +313,7 @@ export default function Model2() {
                 Review Solutions 
                 <ArrowRight className="ml-3 group-hover:translate-x-2 transition-transform" />
               </button>
-              <button className="bg-white/5 border border-white/10 hover:bg-white/10 px-10 py-5 rounded-2xl font-black uppercase tracking-widest text-xs transition-all">
+              <button className="bg-white/5 border border-white/10 hover:bg-white/10 px-10 py-5 rounded-2xl font-black uppercase tracking-widest text-xs transition-all text-white">
                 Architecture Docs
               </button>
             </div>
@@ -318,21 +359,16 @@ export default function Model2() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              { title: "FinTech Core", icon: <ShieldCheck />, desc: "Blockchain-grade security for high-frequency financial transactions." },
-              { title: "VAS Hub", icon: <Layers />, desc: "Micro-service architecture for global content distribution networks." },
-              { title: "Smart Logic", icon: <Globe />, desc: "IoT-enabled ticketing systems for world-class venue management." },
-              { title: "Logistics", icon: <Truck />, desc: "AI-driven fulfillment pipelines with zero-touch automation." }
-            ].map((service, i) => (
+            {verticalServices.map((service, i) => (
               <MagneticSpotlightCard key={i}>
                 <div className="w-14 h-14 bg-slate-800/50 rounded-2xl flex items-center justify-center mb-8 text-indigo-400 border border-white/5 group-hover:text-cyan-400 group-hover:border-cyan-500/50 transition-all duration-500">
-                  {React.cloneElement(service.icon, { size: 28 })}
+                  {React.cloneElement(service.icon as ReactElement)}
                 </div>
                 <h3 className="text-xl font-black mb-4 text-white group-hover:text-cyan-400 transition-colors uppercase tracking-tight">{service.title}</h3>
                 <p className="text-slate-500 leading-relaxed text-sm font-medium mb-8">
                   {service.desc}
                 </p>
-                <div className="flex items-center text-cyan-400 font-black text-[10px] uppercase tracking-[0.2em] opacity-40 group-hover:opacity-100 transition-all">
+                <div className="flex items-center text-cyan-400 font-black text-[10px] uppercase tracking-[0.2em] opacity-40 group-hover:opacity-100 transition-all cursor-pointer">
                   Documentation <ChevronRight size={14} className="ml-2" />
                 </div>
               </MagneticSpotlightCard>
@@ -426,7 +462,7 @@ export default function Model2() {
                 </div>
               </div>
 
-              <form className="space-y-8 bg-black/20 p-8 rounded-3xl border border-white/5">
+              <form className="space-y-8 bg-black/20 p-8 rounded-3xl border border-white/5" onSubmit={(e) => e.preventDefault()}>
                 <div className="space-y-2">
                   <label className="text-[10px] font-black uppercase tracking-widest text-slate-500">Corporate Identity</label>
                   <input className="w-full bg-white/5 border border-white/10 rounded-2xl p-5 focus:ring-1 focus:ring-cyan-400 focus:outline-none text-white transition-all placeholder:text-slate-700" placeholder="Organization Name" />
@@ -437,7 +473,7 @@ export default function Model2() {
                 </div>
                 <div className="space-y-2">
                   <label className="text-[10px] font-black uppercase tracking-widest text-slate-500">Infrastructure Brief</label>
-                  <textarea className="w-full bg-white/5 border border-white/10 rounded-2xl p-5 focus:ring-1 focus:ring-cyan-400 focus:outline-none text-white transition-all placeholder:text-slate-700" rows="4" placeholder="Briefly describe your requirements..."></textarea>
+                  <textarea className="w-full bg-white/5 border border-white/10 rounded-2xl p-5 focus:ring-1 focus:ring-cyan-400 focus:outline-none text-white transition-all placeholder:text-slate-700" rows={4} placeholder="Briefly describe your requirements..."></textarea>
                 </div>
                 <button className="w-full bg-white text-black font-black py-6 rounded-2xl hover:bg-cyan-400 hover:scale-[1.02] transition-all uppercase tracking-[0.3em] text-xs shadow-2xl shadow-white/5">
                   Establish Connection
@@ -462,6 +498,25 @@ export default function Model2() {
           </p>
         </div>
       </footer>
+
+      {/* Mobile Menu Overlay */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 z-[200] bg-[#020617] p-6 flex flex-col items-center justify-center space-y-8">
+          <button onClick={() => setMobileMenuOpen(false)} className="absolute top-8 right-8 text-white">
+            <ChevronRight size={32} className="rotate-180" />
+          </button>
+          {['Products', 'Solutions', 'Journey', 'Contact'].map((item) => (
+            <a 
+              key={item} 
+              href={`#${item.toLowerCase()}`} 
+              onClick={() => setMobileMenuOpen(false)}
+              className="text-2xl font-black uppercase tracking-widest text-white"
+            >
+              {item}
+            </a>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

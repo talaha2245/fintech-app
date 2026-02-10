@@ -151,7 +151,7 @@ export const FinTechAPI = {
   async requestDemo(email: string) {
     let retries = 0;
     const maxRetries = 5;
-
+    console.log(email)
     while (retries <= maxRetries) {
       try {
         await new Promise(resolve => setTimeout(resolve, 1000));

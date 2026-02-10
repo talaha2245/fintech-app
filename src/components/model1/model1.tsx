@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Wallet, 
   ArrowRight, 
@@ -77,7 +77,7 @@ export default function Model1() {
     setFeedback(null);
     try {
       const response = await FinTechAPI.requestDemo(email);
-      setFeedback({ type: 'success', message: response.message });
+      setFeedback({ type: 'success', message: response!.message });
       setEmail("");
     } catch (error) {
       setFeedback({ type: 'error', message: "Something went wrong. Please try again later." });
