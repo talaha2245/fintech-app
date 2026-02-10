@@ -7,14 +7,10 @@ import {
   Zap, 
   RefreshCw, 
   LogIn, 
-  Mail, 
-  CheckCircle2,
   Github,
   Twitter,
   Linkedin,
-  Loader2,
-  PlayCircle,
-  Eye
+  Loader2
 } from 'lucide-react';
 import type { Feature, NavItem, Step } from './components/types';
 import { GlobalStyles } from './components/styles';

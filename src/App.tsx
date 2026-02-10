@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Model1 from "./components/model1/model1";
 import Model2 from "./components/model2/model2";
+import type { JSX } from "react";
 
 const App = (): JSX.Element => {
   return (

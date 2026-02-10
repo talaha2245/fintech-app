@@ -4,7 +4,6 @@ import {
   useScroll, 
   useTransform, 
   useSpring, 
-  AnimatePresence,
   useMotionValue
 } from 'framer-motion';
 import { 
@@ -16,12 +15,9 @@ import {
   Mail, 
   MapPin, 
   CheckCircle2, 
-  Zap,
-  Activity,
   Layers,
   ChevronRight,
   Menu,
-  X,
   Cpu,
   Database,
   BarChart3
