@@ -12,13 +12,25 @@ const StoryText = () => {
         const text = textRef.current;
         if (!text) return;
 
-        // Split text into words but preserve spaces properly
-        const content = "In a world of noise, we deliver clarity. By bridging the gap between complex technology and human connection, we empower enterprises to not just survive, but to define the market. Your growth is our engine; your vision, our blueprint.";
+        // Defined phrases for better readability
+        const phrases = [
+            "In a world of noise,",
+            "we deliver clarity.",
+            "By bridging the gap between",
+            "complex technology and human connection,",
+            "we empower enterprises to not just survive,",
+            "but to define the market.",
+            "Your growth is our engine;",
+            "your vision, our blueprint."
+        ];
 
-        // Clear and rebuild with spans
-        text.innerHTML = content.split(" ").map(word =>
-            `<span class="story-word opacity-20 transition-colors duration-500 inline-block mr-2">${word}</span>`
-        ).join("");
+        // Clear and rebuild with spans preserving structure
+        text.innerHTML = phrases.map(phrase => {
+            const words = phrase.split(" ").map(word =>
+                `<span class="story-word opacity-20 transition-colors duration-500 inline-block mr-[0.2em] md:mr-[0.25em]">${word}</span>`
+            ).join("");
+            return `<div class="block mb-2 lg:mb-4">${words}</div>`;
+        }).join("");
 
         const words = text.querySelectorAll('.story-word');
 
@@ -38,18 +50,19 @@ const StoryText = () => {
     }, []);
 
     return (
-        <div ref={containerRef} className="max-w-5xl mx-auto py-24 px-6 text-center">
-            <div className="mb-12 opacity-0 animate-[fadeIn_1s_ease-out_0.5s_forwards]">
-                <h2 className="text-sm md:text-base font-bold tracking-[0.2em] text-blue-500 uppercase mb-4">Our Philosophy</h2>
-                <div className="w-[1px] h-8 bg-blue-500/50 mx-auto"></div>
+        <div ref={containerRef} className="max-w-6xl mx-auto py-32 px-6 flex flex-col items-center justify-center min-h-[50vh]">
+            <div className="mb-16 opacity-0 animate-[fadeIn_1s_ease-out_0.5s_forwards] flex flex-col items-center">
+                <div className="text-xs md:text-sm font-medium tracking-[0.3em] text-white/40 uppercase mb-4 border border-white/10 px-4 py-1.5 rounded-full backdrop-blur-md">
+                    The Vision
+                </div>
             </div>
 
-            <p
+            <div
                 ref={textRef}
-                className="text-3xl md:text-5xl lg:text-6xl font-bold leading-tight text-gray-600"
+                className="text-4xl md:text-6xl lg:text-7xl font-bold leading-[1.1] text-center tracking-tighter text-white"
             >
-                In a world of noise, we deliver clarity.
-            </p>
+                {/* Text injected via JS */}
+            </div>
         </div>
     );
 };
