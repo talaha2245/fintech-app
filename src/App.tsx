@@ -1,15 +1,19 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Model1 from "./components/model1/model1";
-import Model2 from "./components/model2/model2";
-import type { JSX } from "react";
 
-const App = (): JSX.Element => {
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import Home from "./pages/Home";
+
+const App = () => {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Model1 />} />
-        <Route path="/model" element={<Model2 />} />
-      </Routes>
+      <div className="bg-black min-h-screen text-white">
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+        </Routes>
+        <Footer />
+      </div>
     </BrowserRouter>
   );
 };
