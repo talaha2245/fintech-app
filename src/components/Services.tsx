@@ -1,6 +1,5 @@
 import { useRef } from 'react';
-import ScrollStack, {  ScrollStackItem } from './ScrollStack';
-import { ArrowRight } from 'lucide-react';
+import ScrollStack, { ScrollStackItem } from './ScrollStack';
 import ServiceCard from './ServiceCard';
 
 
@@ -18,28 +17,28 @@ const Services = () => {
                         We deliver end-to-end technology platforms that drive growth, efficiency, and customer engagement for enterprises worldwide.
                     </p>
                 </div>
-               <ScrollStack className='flex flex-col gap-20'>
-                <ScrollStackItem>
-                    <ServiceCard 
-                    productName="MoniFy - payment gateway"
-                    productImage="/images/MoniFypaymentgateway.photo.png"
-                    description="provide a secure, seamless payment infrastructure that enables businesses to accept, authorize, and settle online transactions instantly and reliably"
-                    />
-                </ScrollStackItem>
-                <ScrollStackItem>
-                    <ServiceCard 
-                    productName="Monex B2B payment collection Tool"
-                    productImage = "/images/MonexPaymentCollectionphoto.png"
-                    description="We helped SOBRAGA eliminate revenue leakage by digitizing and centralizing vendor payment collections through an integrated Airtel Money solution, increasing efficiency and overall revenue capture"
-                    />
-                </ScrollStackItem>
-                <ScrollStackItem>
-                    <ServiceCard 
-                    productName="Games "
-                    productImage = "/images/Gemini_Generated_Image_game.png"
-                    description="Our white-label game digital portal offers mobile customers an immersive gaming experience. With a revenue-sharing model, it's the perfect solution for businesses to engage users and boost profits!"
-                    />
-                </ScrollStackItem>
+                <ScrollStack className='flex flex-col gap-20'>
+                    <ScrollStackItem>
+                        <ServiceCard
+                            productName="MoniFy - payment gateway"
+                            productImage="/images/MoniFypaymentgateway.photo.png"
+                            description="provide a secure, seamless payment infrastructure that enables businesses to accept, authorize, and settle online transactions instantly and reliably"
+                        />
+                    </ScrollStackItem>
+                    <ScrollStackItem>
+                        <ServiceCard
+                            productName="Monex B2B payment collection Tool"
+                            productImage="/images/MonexPaymentCollectionphoto.png"
+                            description="We helped SOBRAGA eliminate revenue leakage by digitizing and centralizing vendor payment collections through an integrated Airtel Money solution, increasing efficiency and overall revenue capture"
+                        />
+                    </ScrollStackItem>
+                    <ScrollStackItem>
+                        <ServiceCard
+                            productName="Games "
+                            productImage="/images/Gemini_Generated_Image_game.png"
+                            description="Our white-label game digital portal offers mobile customers an immersive gaming experience. With a revenue-sharing model, it's the perfect solution for businesses to engage users and boost profits!"
+                        />
+                    </ScrollStackItem>
                 </ScrollStack>
             </div>
         </section>

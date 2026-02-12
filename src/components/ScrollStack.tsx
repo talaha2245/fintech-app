@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, forwardRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Smartphone, CreditCard, UtensilsCrossed, Ticket, Lock, Globe } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
